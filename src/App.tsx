@@ -1,24 +1,27 @@
-import React from 'react'
+import React, { useState } from 'react'
 import './App.css';
+import AuthModule from 'modules/auth/routes';
+import { AuthContext } from 'contexts/AuthContext';
+import { HomeModule } from 'modules/home/routes';
+import { storage } from 'utils/storage';
+import { isTokenValid } from 'utils/helpers';
 
-function App() {
+export const App = () => {
+  const [auth, setAuth] = useState(localStorage.getItem('auth') && isTokenValid(localStorage.getItem('auth')))
+    
+  const login = (auth) => {
+    setAuth(auth)
+    storage.setObject('auth', auth)
+  }
+  
   return (
-    <div className="App">
-      <header className="App-header">
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <AuthContext.Provider value={{
+      auth,
+      setAuth,
+      login 
+    }}>
+      <AuthModule />
+      <HomeModule />
+    </AuthContext.Provider>
   );
 }
-
-export default App;

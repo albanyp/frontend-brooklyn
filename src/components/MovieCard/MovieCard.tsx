@@ -1,6 +1,6 @@
 import React from 'react'
 
-function MovieComponent() {
+export const MovieCard = () => {
   return (
     <div className="App">
       <header className="App-header">
@@ -11,5 +11,3 @@ function MovieComponent() {
     </div>
   )
 }
-
-export default MovieComponent
