@@ -44,6 +44,7 @@ export const Login = () => {
           defaultValue="eight@test.com"
           fullWidth
           placeholder="roger.boyle@gmail.com"
+          optional={true}
           containerStyle="my-4" />
         {errors.email && <span>This field is required</span>}
 
@@ -55,6 +56,7 @@ export const Login = () => {
           type="password"
           defaultValue="onePiece"
           fullWidth
+          optional={true}
           containerStyle="my-4" />
         {errors.password && <span>This field is required</span>}
       </AuthTemplate>

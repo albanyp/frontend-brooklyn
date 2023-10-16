@@ -5,6 +5,7 @@ import { AuthContext } from 'contexts/AuthContext';
 import { HomeModule } from 'modules/home/routes';
 import { storage } from 'utils/storage';
 import { isTokenValid } from 'utils/helpers';
+import { MediaModule } from 'modules/media/routes';
 
 export const App = () => {
   const [auth, setAuth] = useState(localStorage.getItem('auth') && isTokenValid(localStorage.getItem('auth')))
@@ -22,6 +23,7 @@ export const App = () => {
     }}>
       <AuthModule />
       <HomeModule />
+      <MediaModule />
     </AuthContext.Provider>
   );
 }

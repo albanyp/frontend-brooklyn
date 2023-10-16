@@ -14,7 +14,7 @@ export const post = async (path: string, requestBody: object) => {
 }
 
 export const get = async (path: string) => {
-  return await fetch(`${process.env.REACT_APP_BASE_URL}/${path}`, {
+  const req = await fetch(`${process.env.REACT_APP_BASE_URL}/${path}`, {
    method: "GET",
    credentials: "same-origin",
    mode: "cors",
@@ -22,6 +22,8 @@ export const get = async (path: string) => {
      "Content-Type": "application/json; charset=UTF-8"
    },
  })
+
+ return req.json()
 }
 
 export const isTokenValid = (token: string) => {
