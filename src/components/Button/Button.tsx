@@ -1,0 +1,31 @@
+import React, { ButtonHTMLAttributes } from 'react'
+import clsx from 'clsx'
+
+interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+  type: 'button' | 'submit' | 'reset'
+  value: string
+  onClick?: any
+  classNames?: string
+  disabled?: boolean
+  fullWidth?: boolean
+}
+
+export const Button = (props: ButtonProps) => {
+  const buttonClasses = clsx('gap-x-2 rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600',
+    {
+      'w-full': props.fullWidth
+    },
+    props.classNames
+  )
+
+  return (
+    <button
+      type={props.type}
+      value={props.value}
+      disabled={props.disabled}
+      className={buttonClasses}
+      onClick={props.onClick}>
+      {props.value}
+    </button>
+  )
+}
