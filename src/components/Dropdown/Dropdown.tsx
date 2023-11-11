@@ -54,6 +54,7 @@ export const Dropdown = ({ data, name, register, setValue, useWatch, ...props}: 
                 <Listbox.Options onChange={setDropdownValue} className="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
                   {listData.map((item) => (
                     <Listbox.Option
+                      {...register(props.name)}
                       key={item.id}
                       className={({ active }) =>
                         clsx(
