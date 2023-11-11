@@ -6,7 +6,7 @@ import { CreateMedia } from "./pages/CreateMedia"
 
 export const MediaModule = () => {
   const { auth } = useContext(AuthContext)
-
+  
   return (
     <Routes>
       <Route

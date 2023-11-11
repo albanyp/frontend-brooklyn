@@ -1,9 +1,10 @@
 import * as React from 'react';
 import { InputHTMLAttributes } from 'react'
 import clsx from 'clsx';
+import { useFormContext } from 'react-hook-form';
 
 export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
-  register: any
+  register?: any
   optional?: boolean
   validate?: any
   label: string
@@ -47,6 +48,14 @@ export const Input = ({ register, optional = true, validate, label, icon, inputC
     labelStyle
   )
 
+  const { setValue } = useFormContext()
+
+  const onInputChange = (evt) => {
+    if(evt && evt.target) {
+      setValue(props.name, evt.target.value)
+    }
+  }
+
   return (
     <div className={containerClassNames}>
       <div className="flex justify-between items-center">
@@ -62,7 +71,7 @@ export const Input = ({ register, optional = true, validate, label, icon, inputC
           type={props.type ? props.type : "text"}
           placeholder={props.placeholder}
           defaultValue={props.defaultValue}
-          onChange={props.onChange}
+          onChange={(evt) => onInputChange(evt)}
           className={inputClassNames} />
       </div>
     </div>

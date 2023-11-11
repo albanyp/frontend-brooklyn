@@ -16,14 +16,14 @@ export const App = () => {
   }
   
   return (
-    <AuthContext.Provider value={{
-      auth,
-      setAuth,
-      login 
-    }}>
-      <AuthModule />
-      <HomeModule />
-      <MediaModule />
-    </AuthContext.Provider>
+      <AuthContext.Provider value={{
+        auth,
+        setAuth,
+        login 
+      }}>
+        <AuthModule />
+        <HomeModule />
+        <MediaModule />
+      </AuthContext.Provider>
   );
 }

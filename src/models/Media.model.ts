@@ -1,9 +1,9 @@
 export interface Media {
-  id: string
+  id?: string
   title: string
   typeId: string
-  createdAt: Date
-  updatedAt: Date
+  createdAt?: Date
+  updatedAt?: Date
   author?: string
   releaseDate?: Date
   groupName?: string

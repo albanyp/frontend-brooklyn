@@ -32,10 +32,10 @@ export const Header = () => {
 
   return (
     <header className="bg-white border border-gray-200">
-      <nav className="mx-auto flex max-w-7xl items-start justify-start p-6 lg:px-8" aria-label="Global">
-        <div className="flex items-center justify-center">
+      <nav className="flex max-w-7xl items-start justify-start p-6 lg:px-8" aria-label="Global">
+        <div className="flex items-center justify-start">
           <div className="hidden lg:flex lg:items-center lg:gap-x-12">
-            <a href="#" className="ml-4 p-1.5">
+            <a href="#">
               <span className="sr-only">Your Company</span>
               <img className="h-8 w-auto" src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600" alt="" />
             </a>
