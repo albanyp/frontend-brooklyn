@@ -1,13 +1,13 @@
 import React, { useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
-
 import { AuthTemplate } from 'templates/AuthTemplate'
 import { Input } from 'components/Input/Input'
 import { post } from 'utils/helpers'
 import { Loader } from 'components/Loader/Loader'
+import { Button } from 'components/Button/Button'
 
-interface FormData {
+interface SignUpForm {
   firstName: string
   lastName: string
   birthdate: Date
@@ -17,12 +17,12 @@ interface FormData {
 }
 
 export const SignUp = () => {
-  const methods = useForm<FormData>()
-  const { register, handleSubmit, formState: { errors } } = methods
+  const methods = useForm<SignUpForm>()
+  const { register, handleSubmit, formState: { errors, isValid } } = methods
   const navigate = useNavigate()
   const [loader, setLoader] = useState(false)
 
-  const onSubmit = async (data: FormData) => {
+  const onSubmit = async (data: SignUpForm) => {
     setLoader(true)
     try {
       await post('auth/sign-up', data)
@@ -60,19 +60,6 @@ export const SignUp = () => {
           containerStyle="my-4" />
         {errors.lastName && <span>{errors.lastName?.message}</span>}
 
-
-        <Input
-          name="email"
-          register={register}
-          validate={{ required: true, pattern: /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/ }}
-          label="Email"
-          type="email"
-          optional={false}
-          fullWidth
-          placeholder="roger.boyle@gmail.com"
-          containerStyle="my-4" />
-        {errors.email && <span>This field is required</span>}
-
         <Input
           name="birthdate"
           register={register}
@@ -80,8 +67,8 @@ export const SignUp = () => {
           label="Birthdate"
           type="Date"
           fullWidth
+          optional
           containerStyle="my-4" />
-        {errors.birthdate && <span>This field is required</span>}
 
         <Input
           name="nickname"
@@ -92,6 +79,17 @@ export const SignUp = () => {
           containerStyle="my-4" />
 
         <Input
+          name="email"
+          register={register}
+          validate={{ required: true, pattern: /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/ }}
+          label="Email"
+          type="email"
+          fullWidth
+          optional={false}
+          placeholder="roger.boyle@gmail.com"
+          containerStyle="my-4" />
+          {errors.email && <span>This field is required</span>}
+        <Input
           name="password"
           register={register}
           validate={{ required: true }}
@@ -100,7 +98,15 @@ export const SignUp = () => {
           optional={false}
           fullWidth
           containerStyle="my-4" />
-        {errors.password && <span>This field is required</span>}
+          {errors.password && <span>This field is required</span>}
+
+        <Button
+          type="submit"
+          value="Sign Up"
+          fullWidth
+          disabled={!isValid}
+          className="px-3 py-3 my-4 font-semibold"
+        />
       </AuthTemplate>
     </FormProvider>
   )

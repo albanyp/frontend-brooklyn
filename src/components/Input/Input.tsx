@@ -18,61 +18,52 @@ export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
 }
 
 export const Input = ({ register, optional = true, validate, label, icon, inputContainerStyle, containerStyle, inputStyle, labelStyle, optionalStyle, fullWidth = true, ...props }: InputProps) => {
-  const inputContainerClassNames = clsx('flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 sm:max-w-md',
-    {
-      'w-full': fullWidth
-    },
-    inputContainerStyle
-  )
-
-  const inputClassNames = clsx('block rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-1 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6',
-    {
-      'w-full': fullWidth
-    },
-    inputStyle
-  )
-
-  const containerClassNames = clsx('flex flex-col sm:max-w-md',
-    {
-      'w-full': fullWidth
-    },
-    containerStyle
-  )
-
-  const optionalClassNames = clsx('text-sm leading-6 text-gray-500', optionalStyle)
-
-  const labelClassNames = clsx('text-sm font-medium leading-6 text-gray-900 py-1.5',
-    {
-      'text-indigo-600': props.type === 'file', 'font-semibold': props.type === 'file'
-    },
-    labelStyle
-  )
 
   const { setValue } = useFormContext()
 
   const onInputChange = (evt) => {
-    if(evt && evt.target) {
+    if (evt && evt.target) {
       setValue(props.name, evt.target.value)
     }
   }
 
   return (
-    <div className={containerClassNames}>
+    <div className={clsx('flex flex-col',
+      {
+        'w-full': fullWidth
+      },
+      containerStyle
+    )}>
       <div className="flex justify-between items-center">
-        <label htmlFor={label} className={labelClassNames}>{label}</label>
+        <label htmlFor={label} className={clsx('text-sm font-medium leading-6 text-gray-900 py-1.5',
+          {
+            'text-indigo-600': props.type === 'file', 'font-semibold': props.type === 'file'
+          },
+          labelStyle
+        )}>{label}</label>
         {optional &&
-          <span className={optionalClassNames}>
+          <span className={clsx('text-sm leading-6 text-gray-500', optionalStyle)}>
             Optional
           </span>}
       </div>
-      <div className={inputContainerClassNames}>
+      <div className={clsx('flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 sm:max-w-md',
+        {
+          'w-full': fullWidth
+        },
+        inputContainerStyle
+      )}>
         <input
           {...register(props.name, validate)}
           type={props.type ? props.type : "text"}
           placeholder={props.placeholder}
           defaultValue={props.defaultValue}
           onChange={(evt) => onInputChange(evt)}
-          className={inputClassNames} />
+          className={clsx('block rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-1 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6',
+            {
+              'w-full': fullWidth
+            },
+            inputStyle
+          )} />
       </div>
     </div>
   )

@@ -21,20 +21,18 @@ export const Login = () => {
   const navigate = useNavigate()
   const [loader, setLoader] = useState(false)
 
-  const onSubmit = async (data: LoginForm) => {
+  const onSubmit = async (form: LoginForm) => {
     setLoader(true)
     try {
-      const userAuth = await post('auth/login', data)
+      const userAuth = await post('auth/login', form)
       login(userAuth)
       navigate('/')
     } catch (err) {
-      //handle error
+      // handle error
       console.log(err)
     }
     setLoader(false)
   }
-
-  console.log('valid', isValid)
 
   return (
     <FormProvider {...methods}>
@@ -50,9 +48,10 @@ export const Login = () => {
               autoComplete="email"
               defaultValue="eight@test.com"
               optional={false}
+              validate={{required: true}}
               className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
             />
-            {errors?.email?.message && <span>This field is required</span>}
+            {errors?.email && <span className="text-xs text-red-500">Please enter a valid email address</span>}
           </div>
         </div>
 
@@ -68,7 +67,7 @@ export const Login = () => {
               optional={false}
               className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
             />
-            {errors?.password?.message && <span>This field is required</span>}
+            {errors?.password && <span className="text-xs text-red-500">This field is required</span>}
           </div>
         </div>
 
@@ -93,14 +92,12 @@ export const Login = () => {
         </div>
 
         <Button
-          type="button"
-          value={"Log in"}
+          type="submit"
+          value="Log in"
           fullWidth
-          primary
-          disabled={isValid}
-          classNames="px-3 py-3 my-4 font-semibold"
-          onClick={onSubmit} />
-        {errors.password && <span>This field is required</span>}
+          disabled={!isValid}
+          className="px-3 py-3 my-4 font-semibold"
+        />
       </AuthTemplate>
     </FormProvider>
   )

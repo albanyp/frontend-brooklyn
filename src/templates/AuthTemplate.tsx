@@ -7,9 +7,9 @@ interface AuthTemplateProps {
   onSubmit: any
 }
 
-export const AuthTemplate: React.FC<AuthTemplateProps> = (props: AuthTemplateProps) => {
+export const AuthTemplate: React.FC<AuthTemplateProps> = ({onSubmit, isSignUp, ...props}: AuthTemplateProps) => {
   return (
-    <div className="flex">
+    <div className="flex items-center justify-center">
       <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-[480px]">
         <div className="bg-white space-y-6 px-6 py-12 shadow sm:rounded-lg sm:px-12">
           <img
@@ -18,10 +18,10 @@ export const AuthTemplate: React.FC<AuthTemplateProps> = (props: AuthTemplatePro
             alt="Your Company"
           />
           <h2 className="mt-6 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
-            {props.isSignUp ? "Sign in to your account" : "Log in to your account"}
+            {isSignUp ? "Sign in to your account" : "Log in to your account"}
           </h2>
 
-          <form className="flex flex-col items-center justify-center w-full">
+          <form className="flex flex-col items-center justify-center w-full" onSubmit={onSubmit}>
             <div className="w-full max-w-lg">
               {props.children}
 

@@ -39,8 +39,7 @@ export const Dropdown = (props: DropdownProps) => {
   }
 
   return (
-    <div className={props.containerStyle}>
-
+    <div className={clsx('w-full', props.containerStyle)}>
       <Listbox value={selected} onChange={e => setDropdownValue(e)}>
         {({ open }) => (
           <>
@@ -98,6 +97,6 @@ export const Dropdown = (props: DropdownProps) => {
           </>
         )}
       </Listbox>
-    </div>
+   </div>
   )
 }

@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import { InputProps } from 'components/Input/Input'
-import clsx from 'clsx'
 import { useFormContext } from 'react-hook-form'
 
 interface FileUploadProps extends InputProps {
@@ -36,7 +35,6 @@ export const FileUpload = ({ accept, label, name, optional = true, register, sec
   const handleDrop = (evt) => {
     evt.preventDefault()
     evt.stopPropagation()
-    console.log(evt.dataTransfer.files[0])
     setDragElement([evt.dataTransfer.files[0]])
     setValue(name, `media/${evt.dataTransfer.files[0].name}`)
   }
@@ -57,8 +55,8 @@ export const FileUpload = ({ accept, label, name, optional = true, register, sec
           </span>}
       </div>
       <div className="mt-2 flex items-center justify-center rounded-lg border border-dashed border-gray-900/25 h-full" ref={drop}>
-        <div className="flex flex-col items-center justify-center">
-          <div className="mt-4 flex text-sm leading-6 text-gray-600">
+        <div className="flex flex-col items-center justify-center p-4">
+          <div className="flex text-sm leading-6 text-gray-600">
             <label
               htmlFor={name}
               className="relative cursor-pointer rounded-md bg-white font-semibold text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 hover:text-indigo-500">
@@ -68,7 +66,6 @@ export const FileUpload = ({ accept, label, name, optional = true, register, sec
                 name={name}
                 type="file"
                 accept={accept}
-                // {...register(name)}
                 onChange={evt => handleFileUploadChange(evt)}
                 className="sr-only h-full" />
             </label>

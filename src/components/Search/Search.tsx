@@ -4,6 +4,7 @@ import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid'
 import { InputProps } from '../Input/Input'
 import { Content } from 'models/Content.model'
 import cslx from 'clsx'
+import { useFormContext } from 'react-hook-form'
 
 interface SearchProps extends InputProps {
   data: Content[]
@@ -18,6 +19,8 @@ export const Search = ({ optional = true, ...props }: SearchProps) => {
     },
     props.containerStyle
   )
+  const { name } = props
+  const { setValue } = useFormContext()
 
   const matchStrings = (input: string, value: string) => {
     for (let character = 0; character < value.length; character++) {
@@ -29,11 +32,28 @@ export const Search = ({ optional = true, ...props }: SearchProps) => {
     return true
   }
 
-  const filteredValues = props.data.filter((item, i) => {
+  const filteredValues = props.data.filter((item) => {
     if (matchStrings((item.name).toLowerCase(), (query).toLowerCase())) {
       return item.name
-    } 
+    }
   })
+
+  const setFormValue = (evt) => {
+    if(evt === null) return ''
+    if (evt.target) {
+      setQuery(evt.target.value)
+      setValue(name, evt.target.value)
+    } 
+  }
+
+  const getFormValue = (item: Content) => {
+    if(item === null) return ''
+
+    if(item.name) {
+      setValue(name, item.id)
+      setQuery(item.name)
+    }
+  }
 
   // alternate solution
   // const filteredValues = props.data.filter(d => {
@@ -43,7 +63,7 @@ export const Search = ({ optional = true, ...props }: SearchProps) => {
 
 
   return (
-    <Combobox as="div" value={selectedValue} onChange={setSelectedValue} className={comboboxStyle}>
+    <Combobox as="div" value={selectedValue} onChange={(item: Content) => getFormValue(item)} className={comboboxStyle}>
       <div className="flex justify-between">
         <Combobox.Label className="block text-sm font-medium text-left leading-6 text-gray-900">{props.label}</Combobox.Label>
         {optional &&
@@ -54,8 +74,8 @@ export const Search = ({ optional = true, ...props }: SearchProps) => {
       <div className="relative mt-2">
         <Combobox.Input
           className="w-full rounded-md border-0 bg-white py-1.5 pl-3 pr-10 text-gray-900  ring-1 ring-inset ring-gray-300 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-          onChange={event => setQuery(event.target.value)}
-          displayValue={(item: Content) => item?.name}
+          onChange={evt => setFormValue(evt)}
+          displayValue={(item: Content) => item?.name ? item.name : query}
         />
         <Combobox.Button className="absolute inset-y-0 right-0 flex items-center rounded-r-md px-2 focus:outline-none">
           <ChevronUpDownIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
