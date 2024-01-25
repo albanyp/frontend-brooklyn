@@ -9,6 +9,7 @@ interface MediaListProps {
 
 export const MediaList = ({ mediaItems }: MediaListProps) => {
   const [showMediaModal, setShowMediaModal] = useState<boolean>()
+  console.log('mediaItems', mediaItems)
 
   const displayModal = () => {
     console.log('trigger event')

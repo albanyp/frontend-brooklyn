@@ -8,14 +8,35 @@ import { Search } from 'components/Search/Search'
 import { get, post } from 'utils/helpers'
 import { Dropdown } from 'components/Dropdown/Dropdown'
 import { FileUpload } from 'components/FileUpload/FileUpload'
-import { Media } from 'models/Media.model'
+import { Media, MediaForm, MediaRequest } from 'models/Media.model'
+import { Franchise } from 'models/Franchise.model'
+// import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css';
+import { toast, ToastContainer } from 'react-toast'
+
+
 
 export const CreateMedia = () => {
-  const methods = useForm<Media>()
+  const methods = useForm<MediaForm>()
   const { register, handleSubmit, getValues, watch, formState: { errors } } = methods
   const [franchises, setFranchises] = useState([])
   const [types, setTypes] = useState([])
   let mediaType = watch().typeId
+  // const notify = () => {
+  //   toast.error('Error notification!', {
+  //     position: 'top-right',
+  //     autoClose: 3000,
+  //     hideProgressBar: false,
+  //     closeOnClick: true,
+  //     pauseOnHover: true,
+  //     draggable: true,
+  //     progress: undefined,
+  //   });
+  // }
+
+  const notify = () => {
+    toast('hi')
+  }
 
   useEffect(() => {
     (async () => {
@@ -27,23 +48,43 @@ export const CreateMedia = () => {
     })()
   }, [])
 
-  const onSubmit = async (data: Media) => {
+  const onSubmit = async (data: MediaForm) => {
+    console.log(data)
     try {
-      if (data.position) data.position = +data.position
-      if (typeof data.releaseDate == 'string' && data.releaseDate === '') data.releaseDate = null
-      if (data.franchiseId) {
-        const franchise = await get(`franchises/${data.franchiseId}`)
-        if (!franchise.id) {
-          const newFranchise = await post(`franchises/create`, {
-            name: data.franchiseId
-          })
-        }
+      const requestBody: MediaRequest = {
+        title: data.title,
+        typeId: data.typeId,
+        author: data.author,
+        releaseDate: data.releaseDate,
+        groupName: data.groupName,
+        position: data.position,
+        producer: data.producer,
+        logoUrl: data.logoUrl,
+        franchiseId: ''
       }
-      await post('movies/create', data)
+
+      if (typeof data.franchise === 'string') {
+        const newFranchise = await post(`franchises/create`, {
+          name: data.franchise
+        })
+
+        requestBody.franchiseId = newFranchise.id
+      } else {
+        requestBody.franchiseId = data.franchise.id
+      }
+
+      if (data.position) data.position = +data.position
+      if (typeof data.releaseDate === 'string') data.releaseDate = null
+
+      // await post('movies/create', requestBody)
     } catch (err) {
-      console.log(err)
+      // console.log(Object.keys(err))
+      // console.log('error???')
+      notify()
+      console.log(err.message)
     }
   }
+
 
   return (
     <FormProvider {...methods}>
@@ -51,6 +92,9 @@ export const CreateMedia = () => {
       <div className="mx-auto px-4 py-8 sm:px-8">
 
         <form onSubmit={handleSubmit(onSubmit)} method="POST">
+          {/* <ToastContainer /> */}
+        <button type='button' onClick={notify}>Notify!</button>
+        <ToastContainer/>
           <div className="space-y-12">
             <div className="flex flex-col items-center border-b border-gray-900/10 pb-12">
               <div className="flex max-w-md w-full flex-col">
@@ -85,10 +129,11 @@ export const CreateMedia = () => {
                   <div className="flex w-6/12">
                     <Search
                       data={franchises}
-                      name="franchiseId"
+                      name="franchise"
                       register={register}
                       validate={{ required: { value: false }, pattern: { value: /[A-Za-z]/g, message: 'Please use valid characters' } }}
                       label="Franchise"
+                      dataOrigin='franchises'
                       fullWidth
                       containerStyle="sm:max-w-md mt-4 mb-1" />
                     <span className="text-xs text-red-500">{errors?.franchiseId?.message}</span>
@@ -117,6 +162,7 @@ export const CreateMedia = () => {
                   type="Date"
                   // validate={{ required: { value: false } }}
                   label="Release Date"
+                  defaultValue={null}
                   containerStyle="mt-4 mb-1" />
                 <span className="text-xs text-red-500">{errors?.releaseDate?.message}</span>
                 {/* </div> */}
@@ -146,7 +192,6 @@ export const CreateMedia = () => {
                           register={register}
                           validate={{ required: { value: false }, maxLength: { value: 3, message: 'Up to 3 characters' }, pattern: { value: /[A-Za-z]/g, message: 'Please use valid characters' } }}
                           label="Group Name"
-                          defaultValue="1"
                           containerStyle="mt-4 mb-1" />
                         <span className="text-xs text-red-500">{errors?.groupName?.message}</span>
                       </div>
@@ -154,10 +199,11 @@ export const CreateMedia = () => {
                       <div className="">
                         <Input
                           name="position"
+                          type='number'
+                          defaultValue={1}
                           register={register}
                           validate={{ required: { value: false }, maxLength: { value: 4, message: 'Up to 4 characters' } }}
                           label="Position"
-                          defaultValue="1"
                           containerStyle="mt-4 mb-1" />
                         <span className="text-xs text-red-500">{errors?.position?.message}</span>
                       </div>

@@ -2,21 +2,21 @@ import React, { useEffect, useState, Fragment } from "react"
 import { Listbox, Transition } from "@headlessui/react"
 import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid'
 import { InputProps } from "components/Input/Input"
-import { Content } from "models/Content.model"
+import { SearchItem } from "components/Search/SearchItem.model"
 import clsx from 'clsx'
 import { useFormContext } from "react-hook-form"
 
 interface DropdownProps extends InputProps {
-  data: Content[]
+  data: SearchItem[]
 }
 
 export const Dropdown = (props: DropdownProps) => {
-  const [selected, setSelected] = useState<Content | undefined>({
+  const [selected, setSelected] = useState<SearchItem | undefined>({
     id: '',
     name: ''
   })
-  
-  const [listData, setListData] = useState<Content[] | undefined>([{
+
+  const [listData, setListData] = useState<SearchItem[] | undefined>([{
     id: '',
     name: ''
   }])
@@ -25,7 +25,7 @@ export const Dropdown = (props: DropdownProps) => {
   const { setValue } = useFormContext()
 
   useEffect(() => {
-    if(props.data.length > 0)  {
+    if (props.data.length > 0) {
       setListData(props.data)
       setSelected(props.data[0])
       setValue(props.name, props.data[0].id)
@@ -51,7 +51,7 @@ export const Dropdown = (props: DropdownProps) => {
                   <ChevronUpDownIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
                 </span>
               </Listbox.Button>
-          
+
               <Transition
                 show={open}
                 as={Fragment}
@@ -97,6 +97,6 @@ export const Dropdown = (props: DropdownProps) => {
           </>
         )}
       </Listbox>
-   </div>
+    </div>
   )
 }

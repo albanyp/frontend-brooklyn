@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 
 import { Input } from 'components/Input/Input'
@@ -12,6 +12,7 @@ import { Button } from 'components/Button/Button'
 interface LoginForm {
   email: string
   password: string
+  rememberMe?: boolean
 }
 
 export const Login = () => {
@@ -19,19 +20,32 @@ export const Login = () => {
   const { register, handleSubmit, formState: { errors, isValid } } = methods
   const { login } = useContext(AuthContext)
   const navigate = useNavigate()
-  const [loader, setLoader] = useState(false)
+  const [loader, setLoader] = useState<boolean>(false)
+  const [rememberMe, setRememberMe] = useState<boolean>(true)
+  const token = JSON.parse(localStorage.getItem('auth'))
+
+  useEffect(() => {
+    if(token) navigate('/', { replace: true})
+  }, [])
+
+  const handleForgotPassword = () => {}
 
   const onSubmit = async (form: LoginForm) => {
     setLoader(true)
+    form.rememberMe = rememberMe
     try {
       const userAuth = await post('auth/login', form)
       login(userAuth)
-      navigate('/')
+      navigate('/', { replace: true})
     } catch (err) {
       // handle error
       console.log(err)
     }
     setLoader(false)
+  }
+
+  const handleRememberMe = () => {
+    setRememberMe(!rememberMe)
   }
 
   return (
@@ -77,6 +91,8 @@ export const Login = () => {
               id="remember-me"
               name="remember-me"
               type="checkbox"
+              checked={rememberMe}
+              onChange={handleRememberMe}
               className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
             />
             <label htmlFor="remember-me" className="ml-3 block text-sm leading-6 text-gray-900">
@@ -85,7 +101,7 @@ export const Login = () => {
           </div>
 
           <div className="text-sm leading-6">
-            <a href="#" className="font-semibold text-indigo-600 hover:text-indigo-500">
+            <a href="#" onClick={handleForgotPassword} className="font-semibold text-indigo-600 hover:text-indigo-500">
               Forgot password?
             </a>
           </div>

@@ -20,6 +20,8 @@ export const Home = () => {
     getItems()
   }, [])
 
+  console.log('mediaItems', mediaItems)
+
 
   return (
     <>

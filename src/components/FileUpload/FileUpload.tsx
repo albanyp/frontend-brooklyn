@@ -18,12 +18,16 @@ export const FileUpload = ({ accept, label, name, optional = true, register, sec
 
 
   useEffect(() => {
-    drop.current.addEventListener('dragover', handleDrag)
-    drop.current.addEventListener('drop', handleDrop)
+    if(drop.current) {
+      drop.current.addEventListener('dragover', handleDrag)
+      drop.current.addEventListener('drop', handleDrop)
+    }
 
     return () => {
-      drop.current.removeEventListener('dragover', handleDrag)
-      drop.current.removeEventListener('drop', handleDrop)
+      if(drop.current) {
+        drop.current.removeEventListener('dragover', handleDrag)
+        drop.current.removeEventListener('drop', handleDrop)
+      }
     }
   }, [drop])
 

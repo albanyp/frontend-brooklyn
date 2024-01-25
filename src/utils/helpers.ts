@@ -1,7 +1,7 @@
 import jwtDecode from 'jwt-decode';
 
 export const post = async (path: string, requestBody: object) => {
-   const req = await fetch(`${process.env.REACT_APP_BASE_URL}/${path}`, {
+   const response = await fetch(`${process.env.REACT_APP_BASE_URL}/${path}`, {
     method: "POST",
     credentials: "same-origin",
     mode: "cors",
@@ -10,7 +10,14 @@ export const post = async (path: string, requestBody: object) => {
     },
     body: JSON.stringify(requestBody)
   })
-  return req.json()
+
+  console.log('response', response)
+  const data = await response.json()
+  if (!response.ok) {
+    throw new Error(data.message);
+  }
+
+  return data
 }
 
 export const get = async (path: string) => {

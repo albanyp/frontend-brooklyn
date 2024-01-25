@@ -47,7 +47,7 @@ export const Header = () => {
     <header className="bg-white border border-gray-200">
       <nav className="flex max-w-7xl items-start justify-start px-2 sm:p-6 lg:px-8" aria-label="Global">
         <div className="flex w-full items-center justify-between">
-          <div className="hidden w-full lg:flex lg:justify-between lg:items-center lg:gap-x-12">
+          <div className="hidden w-4/5 lg:flex lg:justify-between lg:items-center lg:gap-x-8">
             <div className="flex justify-center items-center">
               <a href="#">
                 <span className="sr-only">Your Company</span>
@@ -78,7 +78,7 @@ export const Header = () => {
           />
         </div>
       </nav>
-      <Dialog as="div" className="lg:hidden" open={isMobileMenuOpen} onClose={setMobileMenuOpen}>
+      <Dialog as="div" className="lg:hidden transition-all duration-500 ease-in-out" open={isMobileMenuOpen} onClose={setMobileMenuOpen}>
         <div className="fixed inset-0 z-10" />
         <Dialog.Panel className="fixed inset-y-0 left-0 z-10 w-full overflow-y-auto bg-gray-900 px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
           <div className="flex items-center justify-between">

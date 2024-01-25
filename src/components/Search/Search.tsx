@@ -2,15 +2,25 @@ import React, { useState } from 'react'
 import { Combobox } from '@headlessui/react'
 import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid'
 import { InputProps } from '../Input/Input'
-import { Content } from 'models/Content.model'
+import { SearchItem } from 'components/Search/SearchItem.model'
 import cslx from 'clsx'
-import { useFormContext } from 'react-hook-form'
+import { useController, useFormContext } from 'react-hook-form'
+import { get, post } from 'utils/helpers'
 
 interface SearchProps extends InputProps {
-  data: Content[]
+  data: SearchItem[],
+  dataOrigin?: string
 }
 
-export const Search = ({ optional = true, ...props }: SearchProps) => {
+export const Search = ({
+  // control,
+  // name,
+  optional: _optional,
+  dataOrigin,
+  ...props
+}: SearchProps) => {
+  const { setValue } = useFormContext()
+  const optional = _optional ?? true
   const [query, setQuery] = useState('')
   const [selectedValue, setSelectedValue] = useState(null)
   const comboboxStyle = cslx('flex', 'flex-col',
@@ -20,7 +30,6 @@ export const Search = ({ optional = true, ...props }: SearchProps) => {
     props.containerStyle
   )
   const { name } = props
-  const { setValue } = useFormContext()
 
   const matchStrings = (input: string, value: string) => {
     for (let character = 0; character < value.length; character++) {
@@ -38,7 +47,7 @@ export const Search = ({ optional = true, ...props }: SearchProps) => {
     }
   })
 
-  const setFormValue = (evt) => {
+  const setFormValue = async (evt) => {
     if(evt === null) return ''
     if (evt.target) {
       setQuery(evt.target.value)
@@ -46,11 +55,11 @@ export const Search = ({ optional = true, ...props }: SearchProps) => {
     } 
   }
 
-  const getFormValue = (item: Content) => {
+  const getFormValue = (item: SearchItem) => {
     if(item === null) return ''
 
     if(item.name) {
-      setValue(name, item.id)
+      setValue(name, item)
       setQuery(item.name)
     }
   }
@@ -63,7 +72,7 @@ export const Search = ({ optional = true, ...props }: SearchProps) => {
 
 
   return (
-    <Combobox as="div" value={selectedValue} onChange={(item: Content) => getFormValue(item)} className={comboboxStyle}>
+    <Combobox as="div" value={selectedValue} onChange={(item: SearchItem) => getFormValue(item)} className={comboboxStyle}>
       <div className="flex justify-between">
         <Combobox.Label className="block text-sm font-medium text-left leading-6 text-gray-900">{props.label}</Combobox.Label>
         {optional &&
@@ -73,9 +82,10 @@ export const Search = ({ optional = true, ...props }: SearchProps) => {
       </div>
       <div className="relative mt-2">
         <Combobox.Input
+          autoComplete="off"
           className="w-full rounded-md border-0 bg-white py-1.5 pl-3 pr-10 text-gray-900  ring-1 ring-inset ring-gray-300 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
           onChange={evt => setFormValue(evt)}
-          displayValue={(item: Content) => item?.name ? item.name : query}
+          displayValue={(item: SearchItem) => item?.name ? item.name : query}
         />
         <Combobox.Button className="absolute inset-y-0 right-0 flex items-center rounded-r-md px-2 focus:outline-none">
           <ChevronUpDownIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
