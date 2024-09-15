@@ -1,3 +1,4 @@
+import Brooklyn from 'brooklyn'
 import React, { ReactNode } from 'react'
 
 interface AuthTemplateProps {
@@ -9,17 +10,15 @@ interface AuthTemplateProps {
 
 export const AuthTemplate: React.FC<AuthTemplateProps> = ({onSubmit, isSignUp, ...props}: AuthTemplateProps) => {
   return (
-    <div className="flex items-center justify-center">
+    <div className="flex items-center justify-center bg-zinc-900 h-screen">
       <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-[480px]">
-        <div className="bg-white space-y-6 px-6 py-12 shadow sm:rounded-lg sm:px-12">
-          <img
-            className="mx-auto h-10 w-auto"
-            src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
-            alt="Your Company"
-          />
+        <div className="flex flex-col items-center justify-center bg-white space-y-6 px-6 py-12 shadow sm:rounded-lg sm:px-12">
+          <div className='flex flex-col items-center justify-center justify-items-center'>
+          <Brooklyn />
           <h2 className="mt-6 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
             {isSignUp ? "Sign in to your account" : "Log in to your account"}
           </h2>
+          </div>
 
           <form className="flex flex-col items-center justify-center w-full" onSubmit={onSubmit}>
             <div className="w-full max-w-lg">
@@ -63,13 +62,6 @@ export const AuthTemplate: React.FC<AuthTemplateProps> = ({onSubmit, isSignUp, .
                   </div>
                 </div>
               </div>
-
-              <p className="mt-10 text-center text-sm text-gray-500">
-                Not a member?{' '}
-                <a href="#" className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">
-                  Start a 14 day free trial
-                </a>
-              </p>
             </div>
           </form>
         </div>

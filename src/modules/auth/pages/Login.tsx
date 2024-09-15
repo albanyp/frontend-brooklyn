@@ -8,6 +8,7 @@ import { AuthContext } from 'contexts/AuthContext'
 import { useNavigate } from 'react-router-dom'
 import { Loader } from 'components/Loader/Loader'
 import { Button } from 'components/Button/Button'
+import Brooklyn from 'brooklyn'
 
 interface LoginForm {
   email: string
@@ -63,7 +64,7 @@ export const Login = () => {
               defaultValue="eight@test.com"
               optional={false}
               validate={{required: true}}
-              className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+              className="text-white block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
             />
             {errors?.email && <span className="text-xs text-red-500">Please enter a valid email address</span>}
           </div>
@@ -100,16 +101,18 @@ export const Login = () => {
             </label>
           </div>
 
-          <div className="text-sm leading-6">
+          {/* TODO */}
+          {/* <div className="text-sm leading-6">
             <a href="#" onClick={handleForgotPassword} className="font-semibold text-indigo-600 hover:text-indigo-500">
               Forgot password?
             </a>
-          </div>
+          </div> */}
         </div>
 
         <Button
           type="submit"
           value="Log in"
+          variant='secondary'
           fullWidth
           disabled={!isValid}
           className="px-3 py-3 my-4 font-semibold"

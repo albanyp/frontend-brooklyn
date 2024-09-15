@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useState } from 'react'
 import { Dialog } from '@headlessui/react'
 import {
@@ -13,7 +13,11 @@ import {
 } from '@heroicons/react/24/outline'
 import { Button } from 'components/Button/Button'
 import { useNavigate } from 'react-router-dom'
-
+import { Search } from 'components/Search/Search'
+import { MediaForm } from 'models/Media.model'
+import { get } from 'utils/helpers'
+import { SearchItem } from 'components/Search/SearchItem.model'
+import Brooklyn from '../../brooklyn'
 
 const navigation = [
   {
@@ -26,35 +30,45 @@ const navigation = [
   },
   {
     name: 'Create Media',
-    href: '/movies/create'
+    href: '/media/create'
   },
-  {
-    name: 'Search Content',
-    href: '/movies/'
-  }
 ]
 
 export const Header = () => {
   const navigate = useNavigate()
   const [isMobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [mediaData, setMediaData] = useState<SearchItem[]>([])
 
   const logout = () => {
     if (localStorage.getItem("auth")) localStorage.removeItem("auth")
     navigate('/auth/login')
   }
 
+  useEffect(() => {
+    (async () => {
+      const mediaItems = await get('movies')
+      const formattedMediaItems = []
+      mediaItems.data.forEach(mediaItem => {
+        formattedMediaItems.push({
+          id: mediaItem.id,
+          name: mediaItem.title
+        })
+      })
+      setMediaData(formattedMediaItems)
+    })()
+  }, [])
+
   return (
-    <header className="bg-white border border-gray-200">
-      <nav className="flex max-w-7xl items-start justify-start px-2 sm:p-6 lg:px-8" aria-label="Global">
+    <header className="bg-zinc-900 text-zinc-300 border border-zinc-900">
+      <nav className="flex items-start justify-start px-2 sm:p-6 lg:px-8" aria-label="Global">
         <div className="flex w-full items-center justify-between">
           <div className="hidden w-4/5 lg:flex lg:justify-between lg:items-center lg:gap-x-8">
-            <div className="flex justify-center items-center">
+            <div className="flex justify-center items-center -ml-2">
               <a href="#">
-                <span className="sr-only">Your Company</span>
-                <img className="h-8 w-auto" src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600" alt="" />
+                <Brooklyn />
               </a>
               {navigation.map((item) => (
-                <a key={item.name} href={item.href} className="text-sm mx-4 font-semibold leading-6 text-gray-900">
+                <a key={item.name} href={item.href} className="text-xs mx-4 font-semibold leading-6 text-zinc-300">
                   {item.name}
                 </a>
               ))}
@@ -74,22 +88,21 @@ export const Header = () => {
             value='Log Out'
             variant='tertiary'
             onClick={logout}
-            className="text-xs sm:text-sm"
+            className="text-xs border-0"
           />
+          {/* <Search
+            data={mediaData}
+            navigationSearch
+            dataOrigin='movies' /> */}
         </div>
       </nav>
       <Dialog as="div" className="lg:hidden transition-all duration-500 ease-in-out" open={isMobileMenuOpen} onClose={setMobileMenuOpen}>
         <div className="fixed inset-0 z-10" />
-        <Dialog.Panel className="fixed inset-y-0 left-0 z-10 w-full overflow-y-auto bg-gray-900 px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
+        <Dialog.Panel className="fixed inset-y-0 left-0 z-10 w-full overflow-y-auto bg-zinc-900 px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
           <div className="flex items-center justify-between">
-            <div className="flex flex-1 justify-between">
+            <div className="flex flex-1 justify-between -ml-2">
               <a href="#" className="-p-1.5">
-                <span className="sr-only">Your Company</span>
-                <img
-                  className="h-8 w-auto"
-                  src="https://tailwindui.com/img/logos/mark.svg?color=white"
-                  alt=""
-                />
+                <Brooklyn />
               </a>
               <button
                 type="button"
@@ -106,7 +119,7 @@ export const Header = () => {
               <a
                 key={item.name}
                 href={item.href}
-                className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-white hover:bg-gray-800"
+                className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-white hover:bg-violet-800"
               >
                 {item.name}
               </a>
