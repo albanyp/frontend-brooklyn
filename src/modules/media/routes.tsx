@@ -7,7 +7,7 @@ import { DeleteMedia } from "./pages/DeleteMedia"
 
 export const MediaModule = () => {
   const { auth } = useContext(AuthContext)
-  
+
   return (
     <Routes>
       <Route
