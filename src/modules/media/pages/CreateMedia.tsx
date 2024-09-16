@@ -66,7 +66,7 @@ export const CreateMedia = () => {
         					
 					reset({
 						title: mediaItem.title,
-						typeId: mediaItem.mediaType.name,
+						typeId: mediaItem.mediaType,
 						description: mediaItem.description,
 						franchise: mediaItem.franchise,
 						author: mediaItem.author,
@@ -146,7 +146,6 @@ export const CreateMedia = () => {
 			if (params && params.id) {
 				newMedia = await putMedia(`movies/update/${params.id}`, formData);
 			} else {
-        console.log('going to create media')
 				newMedia = await postMedia("movies/create", formData);
 				console.log("newMedia", newMedia);
 				navigate(`/?media_id=${newMedia.id}`, { replace: true });
