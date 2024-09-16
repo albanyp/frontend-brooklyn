@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { Combobox } from '@headlessui/react'
 import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid'
 import { InputProps } from '../Input/Input'
 import { SearchItem } from 'components/Search/SearchItem.model'
 import cslx from 'clsx'
-import { useFormContext, useWatch } from 'react-hook-form'
 import { filteredValues } from './SearchHelpers'
 
 interface SearchProps extends InputProps {
@@ -38,27 +37,20 @@ export const Search = ({
   const searchValues = filteredValues(props.data, query)
   const inputStyle = navigationSearch ? "border border-zinc-300 bg-zinc-900 text-zinc-300 text-xs px-1.5 py-1.5 ring-offset-transparent focus:ring-transparent ring-0 focus:ring-0" : "border-0 bg-white py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
 
-  // useEffect(() => {
-  //   if(props.useWatch && props.useWatch(name)) {
-  //     setFormValue(props.useWatch(name))
-  //   }
-  // }, [props.useWatch])
-
-
   const setFormValue = (item) => {
     if (item.target) {
       setQuery(item.target.value)
-      if(setValue) setValue(name, item.target.value)
+      if (setValue) setValue(name, item.target.value)
     } else {
       setQuery(item.name)
-      if(setValue) setValue(name, item)
+      if (setValue) setValue(name, item)
     }
   }
 
   return (
-    <Combobox as="div"           
-    {...register(name)}
-      value={props.useWatch(name)}
+    <Combobox as="div"
+      {...register(name)}
+      value={props.useWatch({ name })}
       onChange={(item: SearchItem) => item ? setFormValue(item) : ''} className={comboboxStyle}>
       {!navigationSearch && <div className="flex justify-between">
         <Combobox.Label className="block text-sm font-medium text-left leading-6 text-gray-900">{props.label}</Combobox.Label>

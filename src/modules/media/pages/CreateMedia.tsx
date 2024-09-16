@@ -1,12 +1,9 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { UserCircleIcon, PhotoIcon } from "@heroicons/react/24/outline";
 import { Header } from "components/Header/Header";
 import { Input } from "components/Input/Input";
 import {
-	FieldValues,
 	FormProvider,
 	useForm,
-	useFormContext,
 	useWatch,
 } from "react-hook-form";
 import { Button } from "components/Button/Button";
@@ -36,8 +33,6 @@ export const CreateMedia = () => {
 	});
 
 	const {
-		// register,
-		// setValue,
 		control,
 		handleSubmit,
 		formState: { errors },
@@ -83,7 +78,6 @@ export const CreateMedia = () => {
 				const typesData = await get("types");
 				setFranchises(franchisesData.data);
 				setTypes(typesData.data);
-				const mediaType = typesData.data[0].id;
 			})();
 		} catch (err) {
 			toast.error(err.message, {
@@ -124,30 +118,27 @@ export const CreateMedia = () => {
 						name: data.franchise,
 					});
 
-					requestBody.franchiseId = newFranchise.id;
+					data.franchiseId = newFranchise.id;
 				}
 			} else {
-        console.log('just selected a franchise')
-				requestBody.franchiseId = data.franchise?.id;
+				data.franchiseId = data.franchise?.id;
 			}
 
 			if (data.groupName) requestBody.groupName = data.groupName;
 			if (data.position) requestBody.position = +data.position;
 
 			for (const key in data) {
-				console.log(data.hasOwnProperty(key));
 				if (data.hasOwnProperty(key)) {
-					formData.append(key, data[key]);
+					if(key !== 'franchise') {
+						formData.append(key, data[key]);
+					}
 				}
 			}
-
-			console.log(formData);
 
 			if (params && params.id) {
 				newMedia = await putMedia(`movies/update/${params.id}`, formData);
 			} else {
 				newMedia = await postMedia("movies/create", formData);
-				console.log("newMedia", newMedia);
 				navigate(`/?media_id=${newMedia.id}`, { replace: true });
 			}
 
@@ -169,6 +160,8 @@ export const CreateMedia = () => {
 		}
 		setLoader(false);
 	};
+
+	console.log('errors', errors)
 
 	return (
 		<FormProvider {...methods}>
@@ -209,7 +202,7 @@ export const CreateMedia = () => {
 								</span>
 
 								<div className="flex justify-between">
-									<div className="flex w-6/12 mr-4">
+									<div className="flex flex-col w-6/12 mr-4">
 										<Dropdown
 											data={types}
 											name="typeId"

@@ -13,10 +13,10 @@ interface DropdownProps extends InputProps {
   setValue?: any
 }
 
-export const Dropdown = ({ data, name, register, setValue, useWatch, ...props}: DropdownProps) => {
+export const Dropdown = ({ data, name, register, setValue, useWatch, validate, ...props}: DropdownProps) => {
   const watchedValue = useWatch({name})
-  const [selected, setSelected] = useState<SearchItem | undefined >()
-  const [listData, setListData] = useState<SearchItem[]>([])
+  const [selected, setSelected] = useState<SearchItem | undefined>()
+  const [listData, setListData] = useState<SearchItem[] | undefined>([])
 
 
   useEffect(() => {
@@ -39,15 +39,15 @@ export const Dropdown = ({ data, name, register, setValue, useWatch, ...props}: 
   return (
     <div className={clsx('w-full', props.containerStyle)}>
       <Listbox
-        {...register(name)}
-        value={useWatch(name).id || selected?.name}
+        {...register(name, validate)}
+        value={selected?.name || ''}
         onChange={e => setDropdownValue(e)}>
         {({ open }) => (
           <>
             <Listbox.Label className="block text-sm font-medium leading-6 text-gray-900">{props.label}</Listbox.Label>
             <div className="relative mt-2">
               <Listbox.Button className="relative w-full cursor-default rounded-md h-9 pl-3 pr-10 text-left text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6">
-                <input className="block truncate capitalize" value={selected?.name} />
+                <input className="block truncate capitalize" value={selected?.name || ''} />
                 <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
                   <ChevronUpDownIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
                 </span>
@@ -70,7 +70,7 @@ export const Dropdown = ({ data, name, register, setValue, useWatch, ...props}: 
                           'relative cursor-default select-none py-2 pl-3 pr-9 capitalize'
                         )
                       }
-                      value={item}
+                      value={item || ''}
                     >
                       {({ selected, active }) => (
                         <>
