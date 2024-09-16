@@ -1,7 +1,6 @@
 import { Dialog, Transition } from "@headlessui/react";
 import {
 	XMarkIcon,
-	ExclamationTriangleIcon,
 } from "@heroicons/react/24/outline";
 import { Menu, MenuItem } from "components/Menu/Menu";
 import React, { Fragment, useState } from "react";
@@ -67,11 +66,11 @@ export const Modal = ({ content, show, onClose }: any) => {
 					leaveFrom="opacity-100"
 					leaveTo="opacity-0"
 				>
-					<div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
+					<div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" onClick={onClose}/>
 				</Transition.Child>
 
-				<div className="fixed inset-0 z-10 w-screen overflow-y-auto">
-					<div className="flex min-h-full items-end justify-center text-center sm:items-center sm:p-0">
+				<div className="fixed top-20 sm:inset-0 z-10 sm:w-screen overflow-y-auto max-w-16">
+					<div className="flex sm:min-h-full justify-center text-center sm:items-center sm:p-0" onClick={onClose}>
 						<Transition.Child
 							as={Fragment}
 							enter="ease-out duration-300"
@@ -81,9 +80,9 @@ export const Modal = ({ content, show, onClose }: any) => {
 							leaveFrom="opacity-100 translate-y-0 sm:scale-100"
 							leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
 						>
-							<Dialog.Panel className="relative transform rounded-lg bg-zinc-900 text-left shadow-xl transition-all sm:w-8/12">
+							<Dialog.Panel className="relative transform w-11/12 rounded-lg bg-zinc-900 text-left shadow-xl transition-all sm:w-8/12">
 								<div className="z-10 absolute left-4 top-2 mr-5">
-									<div className="absolute hidden sm:block">
+									<div className="absolute sm:block">
 										<button
 											type="button"
 											className="rounded-full p-1 bg-zinc-900 text-zinc-300 focus:outline-none"
@@ -104,21 +103,20 @@ export const Modal = ({ content, show, onClose }: any) => {
 											content &&
 											`${process.env.REACT_APP_BASE_URL}/${content.coverUrl}`
 										}
-										className="relative top-0 left-0 rounded-lg mb-6 w-full"
+										className="relative top-0 left-0 rounded-lg mb-0 sm:mb-6 w-full"
 									/>
 								</div>
 								<div className="flex p-4">
 									<div className="flex flex-col items-start w-full">
 										<Dialog.Title
 											as="h1"
-											className="text-xl sm:text-4xl font-semibold leading-6 text-zinc-300 mb-4"
+											className="text-lg sm:text-4xl font-semibold leading-6 text-zinc-300 mb-4"
 										>
 											{content?.title}
 											<br />
-											{/* {content ? content.title : 'no loaded content'} */}
 										</Dialog.Title>
-										<div className="flex text-zinc-300">
-											<p className="my-4 mr-4 w-8/12">
+										<div className="flex flex-col sm:flex-row text-zinc-300 text-sm sm:text-base">
+											<p className="my-4 mr-4 w-full sm:w-8/12">
                         {content?.description}
 											</p>
 											<div className="my-4">
@@ -136,9 +134,7 @@ export const Modal = ({ content, show, onClose }: any) => {
 															{content?.producer && content.producer}
 														</p>
 													</div>
-													{/* </div> */}
 
-													{/* <div className="flex"> */}
 													<div className="flex w-full">
 														<p className="text-zinc-500 mr-1">Release Date:</p>
 														<p className="text-zinc-300">
