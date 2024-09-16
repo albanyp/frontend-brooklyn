@@ -1,6 +1,9 @@
-# Getting Started with Create React App
+# Getting Started with Brooklyn
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+
+# See Demo
+https://www.loom.com/share/0a56a65c299c49aaadb5804ac83e13c0?sid=d0bff99e-92e7-4b5b-b7b5-606eb7d1a47a
 
 ## Available Scripts
 
