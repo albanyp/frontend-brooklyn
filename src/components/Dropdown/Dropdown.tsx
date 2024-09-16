@@ -5,6 +5,7 @@ import { InputProps } from "components/Input/Input"
 import { SearchItem } from "components/Search/SearchItem.model"
 import clsx from 'clsx'
 import { useFormContext } from "react-hook-form"
+import { get } from "utils/helpers"
 
 interface DropdownProps extends InputProps {
   data: SearchItem[]
@@ -13,15 +14,22 @@ interface DropdownProps extends InputProps {
 }
 
 export const Dropdown = ({ data, name, register, setValue, useWatch, ...props}: DropdownProps) => {
-  const [selected, setSelected] = useState<SearchItem>()
-
+  const watchedValue = useWatch({name})
+  const [selected, setSelected] = useState<SearchItem | undefined >()
   const [listData, setListData] = useState<SearchItem[]>([])
+
 
   useEffect(() => {
     if (data.length > 0) {
       setListData(data)
     }
-  }, [data])
+
+      if(watchedValue && !selected) {
+        setSelected(watchedValue)
+        setValue(name, watchedValue.id)
+      }
+
+  }, [data, watchedValue])
 
   const setDropdownValue = (value) => {
     setSelected(value)
@@ -92,4 +100,8 @@ export const Dropdown = ({ data, name, register, setValue, useWatch, ...props}: 
       </Listbox>
    </div>
   )
+}
+
+function watch(): any {
+  throw new Error("Function not implemented.")
 }
